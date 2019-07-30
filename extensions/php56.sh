@@ -24,12 +24,25 @@ if [ -z "${EXTENSIONS##*,mysql,*}" ]; then
 fi
 
 
+if [ -z "${EXTENSIONS##*,mongodb,*}" ]; then
+    echo "---------- Install mongodb ----------"
+    pecl install mongodb
+    docker-php-ext-enable mongodb
+fi
+
 if [ -z "${EXTENSIONS##*,sodium,*}" ]; then
     echo "---------- Install sodium ----------"
     apk add --no-cache libsodium-dev
 	docker-php-ext-install ${MC} sodium
 fi
 
+if [ -z "${EXTENSIONS##*,amqp,*}" ]; then
+    echo "---------- Install amqp ----------"
+    apk add --no-cache rabbitmq-c-dev
+    cd /tmp/extensions
+    pecl install amqp-1.9.4.tgz
+    docker-php-ext-enable amqp
+fi
 
 if [ -z "${EXTENSIONS##*,redis,*}" ]; then
     echo "---------- Install redis ----------"
@@ -75,14 +88,13 @@ if [ -z "${EXTENSIONS##*,phalcon,*}" ]; then
 fi
 
 
-#if [ -z "${EXTENSIONS##*,grpc,*}" ]; then
-#    echo "---------- Install grpc ----------"
-#    mkdir grpc \
-#    && tar -xf grpc-1.21.0.tar.gz -C grpc --strip-components=1 \
-#    && ( cd grpc && phpize && ./configure && make ${MC} && make install ) \
-#    && docker-php-ext-enable grpc
-#fi
-
+if [ -z "${EXTENSIONS##*,yaf,*}" ]; then
+    echo "---------- Install yaf ----------"
+    mkdir yaf \
+    && tar -xf yaf-2.3.5.tgz -C yaf --strip-components=1 \
+    && ( cd yaf && phpize && ./configure && make ${MC} && make install ) \
+    && docker-php-ext-enable yaf
+fi
 
 if [ -z "${EXTENSIONS##*,pdo_sqlsrv,*}" ]; then
     echo "---------- Install pdo_sqlsrv ----------"

@@ -26,6 +26,25 @@ if [ -z "${EXTENSIONS##*,sodium,*}" ]; then
     echo "Sodium is bundled with PHP from PHP 7.2.0 "
 fi
 
+if [ -z "${EXTENSIONS##*,mongodb,*}" ]; then
+    echo "---------- Install mongodb ----------"
+    pecl install mongodb
+    docker-php-ext-enable mongodb
+fi
+
+if [ -z "${EXTENSIONS##*,yaf,*}" ]; then
+    echo "---------- Install yaf ----------"
+    pecl install yaf
+    docker-php-ext-enable yaf
+fi
+
+if [ -z "${EXTENSIONS##*,amqp,*}" ]; then
+    echo "---------- Install amqp ----------"
+    apk add --no-cache rabbitmq-c-dev
+    cd /tmp/extensions
+    pecl install amqp-1.9.4.tgz
+    docker-php-ext-enable amqp
+fi
 
 if [ -z "${EXTENSIONS##*,redis,*}" ]; then
     echo "---------- Install redis ----------"

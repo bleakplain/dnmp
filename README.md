@@ -37,6 +37,7 @@ DNMP项目特点：
 - [9.常见问题](#9常见问题)
     - [9.1 如何在PHP代码中使用curl？](#91-如何在php代码中使用curl)
     - [9.2 Docker使用cron定时任务](#92-Docker使用cron定时任务)
+    - [9.3 Docker容器时间](#93-Docker容器时间)
 
 
 ## 1.目录结构
@@ -63,7 +64,7 @@ DNMP项目特点：
 
 
 ## 2.快速使用
-1. 本地安装`git`、`docker`和`docker-compose`。
+1. 本地安装`git`、`docker`和`docker-compose`(**需要1.7.0及以上版本**)。
 2. `clone`项目：
     ```
     $ git clone https://github.com/yeszao/dnmp.git
@@ -76,22 +77,31 @@ DNMP项目特点：
     ```
     $ cd dnmp
     $ cp env.sample .env
-    $ cp docker-compose-sample.yml docker-compose.yml
+    $ cp docker-compose-simple.yml docker-compose.yml
     $ docker-compose up
     ```
-    注意：Windows安装360安全卫士的同学，请先将其退出，不然安装过程中可能Docker创建账号过程可能被拦截，导致启动时文件共享失败；
-5. 访问在浏览器中访问：
+    > 这里我们使用 docker-compose-simple.yml 文件内的服务，是简单版本，只包含Nginx、PHP7.2和MySQL8 `3`个服务。如需更多服务，比如Redis、PHP5.6、MongoDB，ElasticSearch等，请参考 docker-compose-full.yml 文件内的服务列表，把需要的拷贝到 docker-compose.yml 文件在`up`即可。
 
- - [http://localhost](http://localhost)： 默认*http*站点
- - [https://localhost](https://localhost)：自定义证书*https*站点，访问时浏览器会有安全提示，忽略提示访问即可
+    > 注意：Windows安装360安全卫士的同学，请先将其退出，不然安装过程中可能Docker创建账号过程可能被拦截，导致启动时文件共享失败。
 
-两个站点使用同一PHP代码：`./www/localhost/index.php`。
+5. 访问在浏览器中访问：`http://localhost`，PHP代码：`./www/localhost/index.php`文件。
 
-要修改端口、日志文件位置等，请修改**.env**文件，然后重新构建：
+
+6. 如需管理服务，请在命令后面加上服务器名称，dnmp支持的服务名有：`nginx`、`php72`、`php56`、`mysql`、`mongo`、`redis`、`phpmyadmin`、`phpredisadmin`、`elasticsearch`、`adminmongo`、`rabbitmq`、`kibana`
 ```bash
-$ docker-compose build php72    # 重建单个服务
-$ docker-compose build          # 重建全部服务
+$ docker-compose up                         # 创建并且启动所有容器
+$ docker-compose up 服务1 服务2 ...         # 创建并且启动指定的多个容器
+$ docker-compose up -d 服务1 服务2 ...      # 创建并且已后台运行的方式启动多个容器
 
+
+$ docker-compose start 服务1 服务2 ...      # 启动服务
+$ docker-compose stop 服务1 服务2 ...       # 停止服务
+$ docker-compose restart 服务1 服务2 ...    # 重启服务
+$ docker-compose build 服务1 服务2 ...      # 构建或者重新构建服务
+
+
+$ docker-compose rm 服务1 服务2 ...         # 删除并且停止容器
+$ docker-compose down 服务1 服务2 ...       # 停止并删除容器，网络，图像和挂载卷
 ```
 
 
@@ -302,8 +312,11 @@ Redis连接信息如下：
 ### 9.1 如何在PHP代码中使用curl？
 参考这个issue：[https://github.com/yeszao/dnmp/issues/91](https://github.com/yeszao/dnmp/issues/91)
 
-### 9.2 Docker使用cron定时任务
+### 9.2 Docker使用cron定时任务 
 [Docker使用cron定时任务](https://www.awaimai.com/2615.html)
+
+### 9.3 Docker容器时间
+容器时间在.env文件中配置`TZ`变量，所有支持的时区请看[时区列表·维基百科](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)或者[PHP所支持的时区列表·PHP官网](https://www.php.net/manual/zh/timezones.php)。
 
 ## License
 MIT
