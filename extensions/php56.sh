@@ -65,6 +65,25 @@ if [ -z "${EXTENSIONS##*,swoole,*}" ]; then
     && docker-php-ext-enable swoole
 fi
 
+
+if [ -z "${EXTENSIONS##*,phalcon,*}" ]; then
+    echo "---------- Install phalcon ----------"
+    mkdir phalcon \
+    && tar -xf phalcon-v2.0.9.tar.gz -C phalcon --strip-components=1 \
+    && ( cd phalcon/build/64bits && phpize && ./configure && make ${MC} && make install ) \
+    && docker-php-ext-enable phalcon
+fi
+
+
+#if [ -z "${EXTENSIONS##*,grpc,*}" ]; then
+#    echo "---------- Install grpc ----------"
+#    mkdir grpc \
+#    && tar -xf grpc-1.21.0.tar.gz -C grpc --strip-components=1 \
+#    && ( cd grpc && phpize && ./configure && make ${MC} && make install ) \
+#    && docker-php-ext-enable grpc
+#fi
+
+
 if [ -z "${EXTENSIONS##*,pdo_sqlsrv,*}" ]; then
     echo "---------- Install pdo_sqlsrv ----------"
 	echo "pdo_sqlsrv requires PHP >= 7.1.0, installed version is ${PHP_VERSION}"
@@ -74,3 +93,4 @@ if [ -z "${EXTENSIONS##*,sqlsrv,*}" ]; then
     echo "---------- Install sqlsrv ----------"
 	echo "pdo_sqlsrv requires PHP >= 7.1.0, installed version is ${PHP_VERSION}"
 fi
+

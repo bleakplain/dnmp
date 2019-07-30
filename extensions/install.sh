@@ -266,3 +266,24 @@ if [ -z "${EXTENSIONS##*,yaf,*}" ]; then
     printf "\n" | pecl install yaf
     docker-php-ext-enable yaf
 fi
+
+if [ -z "${EXTENSIONS##*,xhprof,*}" ]; then
+    echo "---------- Install xhprof ----------"
+    printf "\n" | pecl install channel://pecl.php.net/xhprof-0.9.4
+    docker-php-ext-enable xhprof
+    echo "---------- Install graphviz ----------"
+    apk add --no-cache graphviz
+    docker-php-ext-enable yaf graphviz
+fi
+
+if [ -z "${EXTENSIONS##*,grpc,*}" ]; then
+    echo "---------- Install grpc ----------"
+    printf "\n" | pecl install https://pecl.php.net/get/grpc-1.20.0.tgz
+    docker-php-ext-enable grpc
+fi
+
+if [ -z "${EXTENSIONS##*,protobuf,*}" ]; then
+    echo "---------- Install protobuf ----------"
+    printf "\n" | pecl install https://pecl.php.net/get/protobuf-3.7.1.tgz
+    docker-php-ext-enable protobuf
+fi
