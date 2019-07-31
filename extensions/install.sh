@@ -10,10 +10,14 @@ echo "Work directory            : ${PWD}"
 echo "============================================"
 echo
 
+if [ "${ALPINE_REPOSITORIES}" != "" ]; then
+    sed -i "s/dl-cdn.alpinelinux.org/${ALPINE_REPOSITORIES}/g" /etc/apk/repositories
+fi
 
 if [ "${PHP_EXTENSIONS}" != "" ]; then
     echo "---------- Install general dependencies ----------"
-    apk add --no-cache autoconf g++ libtool make curl-dev libxml2-dev linux-headers --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
+    apk update && \
+    apk add --no-cache --virtual autoconf g++ libtool make curl-dev build-base libxml2-dev linux-headers
 fi
 
 if [ -z "${EXTENSIONS##*,pdo_mysql,*}" ]; then
@@ -256,18 +260,12 @@ if [ -z "${EXTENSIONS##*,imagick,*}" ]; then
     docker-php-ext-enable imagick
 fi
 
-if [ -z "${EXTENSIONS##*,yaf,*}" ]; then
-    echo "---------- Install yaf ----------"
-    printf "\n" | pecl install yaf
-    docker-php-ext-enable yaf
-fi
-
 if [ -z "${EXTENSIONS##*,xhprof,*}" ]; then
     echo "---------- Install xhprof ----------"
     printf "\n" | pecl install channel://pecl.php.net/xhprof-0.9.4
     docker-php-ext-enable xhprof
     echo "---------- Install graphviz ----------"
-    apk add --no-cache graphviz
+    printf "\n" | apk add --no-cache graphviz
     docker-php-ext-enable yaf graphviz
 fi
 
