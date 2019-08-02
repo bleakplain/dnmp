@@ -7,7 +7,6 @@ services:
       - "${NGINX_HTTPS_HOST_PORT}:443"
     volumes:
       - ${SOURCE_DIR}:/var/www/html/:rw
-      - ${PHALCON_APP_DIR}:/var/www/html/:rw
       - ${XHPROF_DIR}:/var/www/html/xhprof/:rw
       - ${NGINX_CONFD_DIR}:/etc/nginx/conf.d/:rw
       - ${NGINX_CONF_FILE}:/etc/nginx/nginx.conf:ro
@@ -50,7 +49,6 @@ services:
         TZ: "$TZ"
     volumes:
       - ${SOURCE_DIR}:/var/www/html/:rw
-      - ${PHALCON_APP_DIR}:/var/www/html/:rw
       - ${XHPROF_DIR}:/var/www/html/xhprof/:rw
       - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
       - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
@@ -108,6 +106,8 @@ services:
     environment:
       - REDIS_1_HOST=redis
       - REDIS_1_PORT=6379
-
 networks:
   default:
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
