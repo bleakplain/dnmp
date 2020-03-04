@@ -22,7 +22,7 @@ fi
 
 if [ -z "${EXTENSIONS##*,pdo_mysql,*}" ]; then
     echo "---------- Install pdo_mysql ----------"
-    docker-php-ext-install ${MC} pdo_mysql
+    docker-php-ext-install pdo_mysql
 fi
 
 if [ -z "${EXTENSIONS##*,zip,*}" ]; then
@@ -37,12 +37,12 @@ fi
 
 if [ -z "${EXTENSIONS##*,mysqli,*}" ]; then
     echo "---------- Install mysqli ----------"
-	docker-php-ext-install ${MC} mysqli
+	docker-php-ext-install mysqli
 fi
 
 if [ -z "${EXTENSIONS##*,mbstring,*}" ]; then
     echo "---------- Install mbstring ----------"
-	docker-php-ext-install ${MC} mbstring
+	docker-php-ext-install mbstring
 fi
 
 if [ -z "${EXTENSIONS##*,exif,*}" ]; then
@@ -52,7 +52,7 @@ fi
 
 if [ -z "${EXTENSIONS##*,bcmath,*}" ]; then
     echo "---------- Install bcmath ----------"
-	docker-php-ext-install ${MC} bcmath
+	docker-php-ext-install bcmath
 fi
 
 if [ -z "${EXTENSIONS##*,calendar,*}" ]; then
@@ -157,7 +157,7 @@ if [ -z "${EXTENSIONS##*,gd,*}" ]; then
     echo "---------- Install gd ----------"
     apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install ${MC} gd
+    && docker-php-ext-install gd
 fi
 
 if [ -z "${EXTENSIONS##*,intl,*}" ]; then
@@ -197,7 +197,7 @@ fi
 
 if [ -z "${EXTENSIONS##*,curl,*}" ]; then
     echo "---------- Install curl ----------"
-	docker-php-ext-install ${MC} curl
+	docker-php-ext-install curl
 fi
 
 if [ -z "${EXTENSIONS##*,readline,*}" ]; then
@@ -280,3 +280,4 @@ if [ -z "${EXTENSIONS##*,protobuf,*}" ]; then
     printf "\n" | pecl install https://pecl.php.net/get/protobuf-3.7.1.tgz
     docker-php-ext-enable protobuf
 fi
+
